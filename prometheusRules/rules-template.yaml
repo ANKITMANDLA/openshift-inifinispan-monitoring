@@ -154,6 +154,5 @@ objects:
               severity: critical     
                      
 parameters:
-- name: NAMESPACE
 - name: REGION
 - name: MONITORING_NAMESPACE
