@@ -1,0 +1,9 @@
+
+INTERVAL=5m
+HOST=rhdg-cluster-d-prod-external-rhdg.apps.ocp-prd-dor.bell.corp.bce.ca
+URL=blackbox-exporter-prometheus-blackbox-exporter.brsdof-monitoring.svc.cluster.local
+JOB_NAME=blackbox-conn
+APP_NAME=rhdg
+RHDG_NAMESPACE=rhdg
+NAME=prober-conn
+MODULE=http_dg_2xx

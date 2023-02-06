@@ -1,0 +1,17 @@
+NAMESPACE=brsdof-monitoring
+RHDG_NAMESPACE=rhdg-pt
+RHDG_CLUSTER_NAME=rhdg-pt-cluster-brs59-d
+REGION=Dorval
+PROM_REPLICAS=1
+PROM_CPU_LIMIT=500m
+PROM_CPU_REQUEST=100m
+PROM_MEMORY=4Gi
+STORAGE_SPACE=5Gi
+RENTENTION_DAYS=7d
+ALERT_REPLICAS=1
+ALERT_CPU_LIMIT=1000m
+ALERT_CPU_REQUEST=500m
+ALERT_MEMORY=1Gi
+PROM_ROUTE_URL=prometheus-pt-brsdof-monitoring.apps.ocp-uat-dor.bell.corp.bce.ca
+ALERT_ROUTE_URL=alertmanager-pt-brsdof-monitoring.apps.ocp-uat-dor.bell.corp.bce.ca
+SLACK_CHANNEL=dg-grafana-monitoring-pt

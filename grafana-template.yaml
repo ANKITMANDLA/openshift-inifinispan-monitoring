@@ -1,0 +1,214 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: grafana
+objects:
+
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: infinispan-operator-config
+    namespace: ${RHDG_NAMESPACE}
+  data:
+    grafana.dashboard.namespace: ${MONITORING_NAMESPACE}
+    grafana.dashboard.name: infinispan
+    grafana.dashboard.monitoring.key: middleware
+    
+  #Creating RB to create Grafana Dashboard on Monitoring namespace by DG Operator.
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: infinispan-operator-rb
+    namespace: ${MONITORING_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-operator-controller-manager
+      namespace: ${RHDG_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: grafanadashboards.integreatly.org-v1alpha1-admin
+
+- apiVersion: integreatly.org/v1alpha1
+  kind: Grafana
+  metadata:
+    name: grafana
+  spec:
+    dataStorage:
+      accessModes:
+      - ReadWriteMany
+      class: ${STORAGE_CLASS}
+      size: ${PV_SIZE}
+    config:
+      auth:
+        disable_signout_menu: true
+      auth.anonymous:
+        enabled: false
+      log:
+        level: warn
+        mode: console
+      security:
+        admin_password: ${GRAFANA_PASSWORD}
+        admin_user: admin
+    dashboardLabelSelector:
+      - matchExpressions:
+          - key: app
+            operator: In
+            values:
+              - grafana
+    deployment:
+      replicas: ${{GRAFANA_REPLICAS}}
+  
+    ingress:
+      enabled: true
+    resources:
+      limits:
+        cpu: ${CPU_LIMIT}
+        memory: ${MEMORY}
+      requests:
+        cpu: ${CPU_REQUEST}
+        memory: ${MEMORY}
+
+- apiVersion: integreatly.org/v1alpha1
+  kind: GrafanaDataSource
+  metadata:
+    name: grafanadatasource
+  spec:
+    name: datasource.yaml
+    datasources:
+      - access: proxy
+        editable: true
+        isDefault: true
+        jsonData:
+          httpHeaderName1: Authorization
+          timeInterval: 5s
+          tlsSkipVerify: true
+        name: Prometheus
+        type: prometheus
+        url: 'http://prometheus.${MONITORING_NAMESPACE}.svc.cluster.local:9090'
+
+- apiVersion: integreatly.org/v1alpha1
+  kind: GrafanaDataSource
+  metadata:
+    name: thanos-qurier
+  spec:
+    datasources:
+      - access: proxy
+        editable: true
+        isDefault: false
+        jsonData:
+          customQueryParameters: namespace=${MONITORING_NAMESPACE}
+          httpHeaderName1: Authorization
+          timeInterval: 5s
+          tlsSkipVerify: true
+        name: thanos-qurier
+        secureJsonData:
+          httpHeaderValue1: Bearer ${SA_TOKEN}
+         
+        type: prometheus
+        url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9092'
+    name: datasource-1.yaml
+
+## added for Grafana to create thanos DS for all other namespace. Providing view privilege  to SA "infinispan-monitoring" 
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: monitoring
+    namespace: ${RHDG_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace: ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view
+
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: grafana-monitoring
+    namespace: ${OMF_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace:  ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view  
+
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: grafana-monitoring
+    namespace: ${OM_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace:  ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view
+
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: grafana-monitoring
+    namespace: ${APIS_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace:  ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view
+
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: grafana-monitoring
+    namespace: ${DOF_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace:  ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view  
+
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: grafana-monitoring
+    namespace: ${CPQ_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: infinispan-monitoring
+      namespace:  ${MONITORING_NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: view      
+
+parameters:
+- name: MONITORING_NAMESPACE
+- name: RHDG_NAMESPACE
+- name: GRAFANA_REPLICAS
+- name: CPU_REQUEST
+- name: CPU_LIMIT
+- name: MEMORY
+- name: SA_TOKEN
+- name: PV_SIZE
+- name: STORAGE_CLASS
+- name: GRAFANA_PASSWORD
+- name: OM_NAMESPACE
+- name: OMF_NAMESPACE
+- name: CPQ_NAMESPACE
+- name: APIS_NAMESPACE
+- name: DOF_NAMESPACE
+
+

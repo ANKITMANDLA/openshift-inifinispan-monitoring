@@ -1,0 +1,1342 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+    monitoring-key: middleware
+  name: infinispan-custom
+spec:
+  datasources:
+    - datasourceName: Prometheus
+      inputName: DS_PROMETHEUS
+  json: |
+    {
+    "__inputs": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "pluginName": "Prometheus"
+      }
+    ],
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "6.2.1"
+      },
+      {
+        "type": "panel",
+        "id": "graph",
+        "name": "Graph",
+        "version": ""
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "name": "Singlestat",
+        "version": ""
+      }
+    ],
+     "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 6,
+    "iteration": 1664390860078,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 36,
+        "panels": [],
+        "title": "Catalog Data Caches",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "hiddenSeries": false,
+        "id": 38,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.16",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFProductOfferingCache_statistics_off_heap_memory_used)",
+            "interval": "",
+            "legendFormat": "TMFProductOfferingCache",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFCustomProductOfferingCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFCustomProductOfferingCache",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryEshopCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryEshopCache",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryCache",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_PromotionCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "PromotionCache",
+            "refId": "E"
+          },
+          {
+          "exemplar": true,
+          "expr": "sum(vendor_cache_manager_default_cache_PromotionStaticCache_statistics_off_heap_memory_used)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "PromotionStaticCache",
+          "refId": "F"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Off-heap memory Catalog Caches",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "decbytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80000000000
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 16,
+          "w": 11,
+          "x": 12,
+          "y": 1
+        },
+        "id": 40,
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.16",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFProductOfferingCache_statistics_off_heap_memory_used)",
+            "interval": "",
+            "legendFormat": "TMFProductOfferingCache",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFCustomProductOfferingCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFCustomProductOfferingCache",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryEshopCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryEshopCache",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryCache",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_PromotionCache_statistics_off_heap_memory_used)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "PromotionCache",
+            "refId": "E"
+          },
+          {
+          "exemplar": true,
+          "expr": "sum(vendor_cache_manager_default_cache_PromotionStaticCache_statistics_off_heap_memory_used)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "PromotionStaticCache",
+          "refId": "F"
+          }
+        ],
+        "title": "Catalog caches Off-heap Mem",
+        "type": "gauge"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 9
+        },
+        "hiddenSeries": false,
+        "id": 32,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.16",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFProductOfferingCache_statistics_stores)",
+            "interval": "",
+            "legendFormat": "TMFCustomProductOfferingCache",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFCustomProductOfferingCache_statistics_stores)\r",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFCustomProductOfferingCache",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryEshopCache_statistics_stores)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryEshopCache",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_TMFDofCategoryCache_statistics_stores)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "TMFDofCategoryCache",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_PromotionCache_statistics_stores)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "PromotionCache",
+            "refId": "E"
+          },
+          {
+          "exemplar": true,
+          "expr": "sum(vendor_cache_manager_default_cache_PromotionStaticCache_statistics_stores)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "PromotionStaticCache",
+          "refId": "F"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Catalog Cache stores/put statistics",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 28,
+        "panels": [],
+        "title": "Hits/Misses/Puts",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 18
+        },
+        "hiddenSeries": false,
+        "id": 26,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.16",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_hits)",
+            "interval": "",
+            "legendFormat": "container_stats_hits",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_misses)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "container_stats_misses",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_stores)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "container_stats_stores",
+            "refId": "C"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Container-level Hits/Misses/Puts",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:115",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:116",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 18
+        },
+        "id": 34,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "list",
+            "placement": "right",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {}
+        },
+        "pluginVersion": "7.5.16",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_hits)",
+            "interval": "",
+            "legendFormat": "cache_container_stats_hits",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_misses)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "container_stats_misses",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_stores)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "container_stats_stores",
+            "refId": "C"
+          }
+        ],
+        "title": "Ratio Container misses/hits/puts",
+        "type": "piechart"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "id": 14,
+        "panels": [
+          {
+            "datasource": null,
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "bars",
+                  "fillOpacity": 100,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "graph": false,
+                    "legend": false,
+                    "tooltip": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "__systemRef": "hideSeriesFrom",
+                  "matcher": {
+                    "id": "byNames",
+                    "options": {
+                      "mode": "exclude",
+                      "names": [
+                        "TMFCatalogStatusCache"
+                      ],
+                      "prefix": "All except:",
+                      "readOnly": true
+                    }
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.hideFrom",
+                      "value": {
+                        "graph": true,
+                        "legend": false,
+                        "tooltip": false
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 14,
+              "w": 24,
+              "x": 0,
+              "y": 1
+            },
+            "id": 8,
+            "options": {
+              "graph": {},
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "right"
+              },
+              "tooltipOptions": {
+                "mode": "multi"
+              }
+            },
+            "pluginVersion": "7.5.16",
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "probe_success{job=\"blackbox-cache\"}",
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Cache Status",
+            "transformations": [
+              {
+                "id": "renameByRegex",
+                "options": {
+                  "regex": ".*/rest/v2/caches/(\\w+)\", .*",
+                  "renamePattern": "$1"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "datasource": null,
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [
+                  {
+                    "from": "0",
+                    "id": 1,
+                    "text": "Offline",
+                    "to": "203",
+                    "type": 2
+                  },
+                  {
+                    "from": "",
+                    "id": 2,
+                    "text": "UP",
+                    "to": "",
+                    "type": 1,
+                    "value": "204"
+                  },
+                  {
+                    "from": "205",
+                    "id": 3,
+                    "text": "Offline",
+                    "to": "600",
+                    "type": 2,
+                    "value": ""
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 205
+                    },
+                    {
+                      "color": "red",
+                      "value": 500
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 30,
+              "w": 24,
+              "x": 0,
+              "y": 15
+            },
+            "id": 6,
+            "options": {
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "text": {}
+            },
+            "pluginVersion": "7.5.16",
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "probe_http_status_code==204",
+                "interval": "",
+                "legendFormat": "",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Cache Health Status",
+            "transformations": [
+              {
+                "id": "renameByRegex",
+                "options": {
+                  "regex": ".*/rest/v2/caches/(\\w+)\", .*",
+                  "renamePattern": "$1"
+                }
+              }
+            ],
+            "type": "gauge"
+          }
+        ],
+        "title": "Cache Status",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 10,
+        "panels": [],
+        "title": "Off-Heap Memory per Cache",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 15,
+          "w": 24,
+          "x": 0,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 16,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.16",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(label_replace({__name__=~\".*_statistics_off_heap_memory_used\"},\"name_label\",\"$1\",\"__name__\",\"(.+)\")) by (__name__)",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Off-heap memory used per Cache",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transformations": [
+          {
+            "id": "renameByRegex",
+            "options": {
+              "regex": "vendor_cache_manager_default_cache_(\\w+)_statistics_off_heap_memory_used",
+              "renamePattern": "$1"
+            }
+          }
+        ],
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "decbytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "graph": false,
+                "legend": false,
+                "tooltip": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": true
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 14,
+          "x": 0,
+          "y": 43
+        },
+        "id": 20,
+        "options": {
+          "graph": {},
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "right"
+          },
+          "tooltipOptions": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "7.5.16",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_off_heap_memory_used) by (pod)",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "Container Off-heap memory by pod",
+        "type": "timeseries"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 8000000000000
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 10,
+          "x": 14,
+          "y": 43
+        },
+        "id": 22,
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.16",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(vendor_cache_manager_default_cache_container_stats_off_heap_memory_used)",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "Container Off-heap memory total",
+        "type": "gauge"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80000000000
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 54
+        },
+        "id": 18,
+        "options": {
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.16",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(label_replace({__name__=~\".*_statistics_off_heap_memory_used\"},\"name_label\",\"$1\",\"__name__\",\"(.+)\")) by (__name__)",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 3,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Current off-heap memory size per cache",
+        "transformations": [
+          {
+            "id": "renameByRegex",
+            "options": {
+              "regex": "vendor_cache_manager_default_cache_(\\w+)_statistics_off_heap_memory_used",
+              "renamePattern": "$1"
+            }
+          }
+        ],
+        "type": "bargauge"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "rhdg-pt",
+            "value": "rhdg-pt"
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(vendor_cache_manager_default_number_of_cache_configurations,namespace)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Namespace",
+          "multi": false,
+          "name": "namespace",
+          "options": [],
+          "query": {
+            "query": "label_values(vendor_cache_manager_default_number_of_cache_configurations,namespace)",
+            "refId": "Prometheus-namespace-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "rhdg-pt-cluster-brs59-d-admin",
+            "value": "rhdg-pt-cluster-brs59-d-admin"
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(vendor_cache_manager_default_number_of_cache_configurations{namespace=~\"$namespace\"}, service)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Cluster",
+          "multi": false,
+          "name": "cluster",
+          "options": [],
+          "query": {
+            "query": "label_values(vendor_cache_manager_default_number_of_cache_configurations{namespace=~\"$namespace\"}, service)",
+            "refId": "Prometheus-cluster-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": true,
+            "text": [
+              "All"
+            ],
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "Prometheus",
+          "definition": "query_result({job=~\"$cluster\", namespace=~\"$namespace\", __name__=~\"vendor_cache_manager_default_cache_.*_cluster_cache_stats_activations\"})",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": true,
+          "name": "caches",
+          "options": [],
+          "query": {
+            "query": "query_result({job=~\"$cluster\", namespace=~\"$namespace\", __name__=~\"vendor_cache_manager_default_cache_.*_cluster_cache_stats_activations\"})",
+            "refId": "Prometheus-caches-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "/vendor_cache_manager_default_cache_(.*)_cluster_cache_stats_activations/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Infinispan-custom",
+    "uid": "U826WzBGk",
+    "version": 18
+
+    }

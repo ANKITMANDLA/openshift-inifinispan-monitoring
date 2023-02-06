@@ -1,0 +1,224 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: prometheus
+objects:
+
+- apiVersion: monitoring.coreos.com/v1
+  kind: Prometheus
+  metadata:
+    name: rhdg-prom
+  spec:
+    serviceAccountName: prometheus-k8s
+    serviceMonitorSelector: {}
+    resources: {}
+    alerting:
+      alertmanagers:
+        - name: alertmanager-main
+          namespace: ${NAMESPACE}
+          port: web
+    probeSelector: {}
+    containers:
+      - name: prometheus
+        resources:
+          limits:
+            cpu: ${PROM_CPU_LIMIT}
+            memory: ${PROM_MEMORY}
+          requests:
+            cpu: ${PROM_CPU_REQUEST}
+            memory: ${PROM_MEMORY}
+    podMonitorSelector: {}
+    storage:
+      volumeClaimTemplate:
+        metadata:
+          name: prometheus
+        spec:
+          resources:
+            requests:
+              storage: ${STORAGE_SPACE}
+          storageClassName: ocs-storagecluster-ceph-rbd
+    replicas: ${{PROM_REPLICAS}}
+    ruleSelector: {}
+    retention: ${RENTENTION_DAYS}
+    
+  #Creating Rolebinding so that prometheus SA can access resources on RHDG cluster namespace
+- kind: RoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: prometheus-rb
+    namespace: ${RHDG_NAMESPACE}
+  subjects:
+    - kind: ServiceAccount
+      name: prometheus-k8s
+      namespace: ${NAMESPACE}
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: admin
+
+- apiVersion: monitoring.coreos.com/v1
+  kind: ServiceMonitor
+  metadata:
+    name: rhdg-service-monitor
+  spec:
+    endpoints:
+      - basicAuth:
+          password:
+            key: password
+            name: rhdg-operator-secret
+          username:
+            key: username
+            name: rhdg-operator-secret
+        bearerTokenSecret:
+          key: ''
+        honorLabels: true
+        interval: 30s
+        path: /metrics
+        port: infinispan-adm
+        scheme: http
+        scrapeTimeout: 10s
+    namespaceSelector:
+      matchNames:
+        - ${RHDG_NAMESPACE}
+    selector:
+      matchLabels:
+        app: infinispan-service-admin
+        clusterName: ${RHDG_CLUSTER_NAME}
+        infinispan_cr: ${RHDG_CLUSTER_NAME}
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: prometheus
+  spec:
+    ports:
+      - name: web
+        protocol: TCP
+        port: 9090
+        targetPort: web
+    type: ClusterIP
+    selector:
+      prometheus: rhdg-prom
+
+
+
+- kind: Alertmanager
+  apiVersion: monitoring.coreos.com/v1
+  metadata:
+    name: alertmanager-main
+    namespace: ${NAMESPACE}
+  spec:
+    replicas: ${{ALERT_REPLICAS}}
+    resources:
+      limits:
+        cpu: ${ALERT_CPU_LIMIT}
+        memory: ${ALERT_MEMORY}
+      requests:
+        cpu: ${ALERT_CPU_REQUEST}
+        memory: ${ALERT_MEMORY}
+    alertmanagerConfigSelector:
+      matchLabels:
+        app: alertmanager
+        
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: alertmanager-main
+  spec:
+    ports:
+      - name: web
+        protocol: TCP
+        port: 9093
+        targetPort: web
+    type: ClusterIP
+    selector:
+      alertmanager: alertmanager-main     
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: prometheus
+  spec:
+    host: ${PROM_ROUTE_URL}
+    to:
+      kind: Service
+      name: prometheus
+      weight: 100
+    port:
+      targetPort: web
+    wildcardPolicy: None
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: alertmanager
+  spec:
+    host: ${ALERT_ROUTE_URL}
+    to:
+      kind: Service
+      name: alertmanager-operated
+      weight: 100
+    port:
+      targetPort: web
+    wildcardPolicy: None
+
+- apiVersion: monitoring.coreos.com/v1alpha1
+  kind: AlertmanagerConfig
+  metadata:
+    labels:
+      app: alertmanager
+    name: alertmanagerconfig
+  spec:
+    receivers:
+      - name: slack
+        slackConfigs:
+          - apiURL:
+              key: apiURL
+              name: slack-notification # slack URL secret name
+            channel: ${SLACK_CHANNEL} #slack channel name
+            httpConfig:
+              proxyURL: 'http://fastweb.int.bell.ca:8083' # request to notificaton  URL via bell proxy
+            sendResolved: true
+            text: |-
+              {{ range .Alerts }}<!here> {{ .Annotations.title }}
+              {{ .Annotations.description }}
+              {{ end }}
+    route:
+      groupBy:
+        - alertname
+      receiver: slack
+      repeatInterval: 15m
+
+- kind: NetworkPolicy	
+  apiVersion: networking.k8s.io/v1	
+  metadata:	
+    name: allow-from-brsdof-monitoring-ingress	
+    namespace: ${RHDG_NAMESPACE}	
+  spec:	
+    podSelector: {}	
+    ingress:	
+      - from:	
+          - namespaceSelector:	
+              matchLabels:	
+                namespace: ${NAMESPACE}	
+    policyTypes:	
+      - Ingress	
+      
+parameters:
+- name: NAMESPACE
+- name: RHDG_NAMESPACE
+- name: RHDG_CLUSTER_NAME
+- name: PROM_CPU_LIMIT
+- name: PROM_CPU_REQUEST
+- name: STORAGE_SPACE
+- name: PROM_MEMORY
+- name: RENTENTION_DAYS
+- name: PROM_REPLICAS
+- name: ALERT_CPU_LIMIT
+- name: ALERT_REPLICAS
+- name: ALERT_CPU_REQUEST
+- name: ALERT_MEMORY
+- name: PROM_ROUTE_URL
+- name: ALERT_ROUTE_URL
+- name: SLACK_CHANNEL
+- name: REGION

@@ -1,0 +1,48 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: thanos-datasource-template
+objects:
+
+ - apiVersion: integreatly.org/v1alpha1
+   kind: GrafanaDataSource
+   metadata:
+     name: thanos-qurier
+     namespace: ${NAMESPACE}
+   spec:
+     datasources:
+       - access: proxy
+         editable: true
+         isDefault: false
+         jsonData:
+           customQueryParameters: namespace=${NAMESPACE}
+           httpHeaderName1: Authorization
+           timeInterval: 5s
+           tlsSkipVerify: true
+         name: thanos-qurier
+         secureJsonData:
+           httpHeaderValue1: >-
+             Bearer
+             ${BEARER}
+         type: prometheus
+         url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9092'
+     name: datasource-1.yaml
+   status:
+     message: ''
+     phase: ''
+
+
+parameters:
+- name: NAMESPACE
+- name: BEARER
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+REPLICAS=1
+SERVICEACCNAME=prometheus-k8s
+IMAGE=prom/blackbox-exporter:v0.22.0
+APP_NAME=blackbox-exporter-prometheus-blackbox-exporter
+INSTANCE=blackbox-exporter
+NAME=prometheus-blackbox-exporter
+VERSION=0.22.0
+PORT=9115
+DG_PASSWORD=PpQUbVnoloGWVVRy

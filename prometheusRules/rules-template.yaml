@@ -1,0 +1,159 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: prometheus-rules
+objects:
+
+- apiVersion: monitoring.coreos.com/v1
+  kind: PrometheusRule
+  metadata:
+    name: prometheus-rules
+  spec:
+    groups:
+      - name: AllInstances
+        rules:
+          - alert: ${REGION}-InstanceDown
+            annotations:
+              description: '{{ $labels.pod }}  has been down for more than 1 minute.'
+              title: 'Instance {{ $labels.pod }} down'
+            expr: 'up{container="infinispan"} == 0'
+            for: 0m
+            labels:
+              severity: critical
+              namespace: ${MONITORING_NAMESPACE}
+
+      - name: DegradedState
+        rules:
+          - alert: ${REGION}-UnhealthyDataGrid
+            annotations:
+              description: Datagrid Status is not HEALTHY
+            expr: 'max_over_time(probe_failed_due_to_regex{job=''blackbox''}[2m]) == 1'
+            for: 0m
+            labels:
+              severity: critical
+              namespace: ${MONITORING_NAMESPACE}
+          - alert: ${REGION}-DGUnreachable
+            annotations:
+              description: Datagrid Status is not HEALTHY
+            expr: 'probe_success{job="blackbox-conn"} == 0'
+            for: 0m
+            labels:
+              severity: critical
+              namespace: ${MONITORING_NAMESPACE}
+
+      - name: CPUUtilization
+        rules:
+          - alert: ${REGION}-CPUUtilization
+            annotations:
+              description: >-
+                Datagrid CPU Utilization is high for pod {{ $labels.pod }} for
+                more than 5 minutes. Current Container CPU Utilization: {{ $value }}
+            expr: 'round(base_cpu_processCpuLoad,.001) > .15'
+            for: 15m
+            labels:
+              severity: warning
+              namespace: ${MONITORING_NAMESPACE}
+
+      - name: MemoryUtilization
+        rules:
+          - alert: ${REGION}-nonheapMemoryUtilization
+            annotations:
+              description: Non Heap Memory Utilization is >= 70% for more than 5 minutes.Current NonHeap Memory Utilization {{ $value }}%
+            expr: >-
+              sum(base_memory_usedNonHeap_bytes)*100/sum(base_memory_maxNonHeap_bytes)
+              >= 70
+            for: 15m
+            labels:
+              job: memoryUtilization
+              namespace: ${MONITORING_NAMESPACE}
+              severity: warning
+
+          - alert: ${REGION}-heapMemoryUtilization
+            annotations:
+              description: >-
+                Heap Memory Utilization Utilization is >= 70%  for more than 5
+                minutes.Current Heap Memory Utilization: {{ $value }}% 
+            expr: >-
+              sum(base_memory_usedHeap_bytes)*100/sum(base_memory_maxHeap_bytes)
+              >= 70
+            for: 15m
+            labels:
+              job: MemoryUtilization
+              namespace: ${MONITORING_NAMESPACE}
+              severity: warning
+      - name: CacheDegraded
+        rules:
+          - alert: ${REGION}-CacheDegraded
+            annotations:
+              description: >-
+                Cache is degraded in Wynford for Cache: {{ $labels.real }}  for a period of 5 minute
+            expr: >-
+              label_replace({__name__=~".*probe_success",job="blackbox-cache"},"real","$1","instance","https://[0-9a-zA-Z:.-]+/rest/v2/caches/(.*)")==0
+            for: 5m
+
+      - name: CatalogCacheDropAlert
+        rules:
+          - alert: ${REGION}-CatalogCacheDropAlert
+            annotations:
+              description: >-
+                TMFProductOfferingCache dropped below threshold value. Current
+                Cache size is {{ $value }}MB 
+            expr: >-
+              round(sum(vendor_cache_manager_default_cache_TMFProductOfferingCache_statistics_off_heap_memory_used)/1000000,.01)
+              < 744.47
+            for: 0m
+            labels:
+              cacheName: TMFProductOfferingCache
+              job: CatalogCacheDropAlert
+              namespace: ${MONITORING_NAMESPACE}
+              severity: critical
+
+          - alert: ${REGION}-CatalogCacheDropAlert
+            annotations:
+              description: >-
+                TMFCustomProductOfferingCache dropped below threshold value.
+                Current Cache size is {{ $value }}MB 
+            expr: >-
+              round(sum(vendor_cache_manager_default_cache_TMFCustomProductOfferingCache_statistics_off_heap_memory_used)/1000000,.01)
+              < 433.16
+            for: 0m
+            labels:
+              cacheName: TMFCustomProductOfferingCache
+              job: CatalogCacheDropAlert
+              namespace: ${MONITORING_NAMESPACE}
+              severity: critical
+              
+          - alert: ${REGION}-CatalogCacheDropAlert
+            annotations:
+              description: >-
+                TMFDofCategoryEshopCache dropped below threshold value. Current
+                Cache size is {{ $value }}MB 
+            expr: >-
+              round(sum(vendor_cache_manager_default_cache_TMFDofCategoryEshopCache_statistics_off_heap_memory_used)/1000000,.01)
+              < 1.33
+            for: 0m
+            labels:
+              cacheName: TMFDofCategoryEshopCache
+              job: CatalogCacheDropAlert
+              namespace: ${MONITORING_NAMESPACE}
+              severity: critical
+
+          - alert: ${REGION}-CatalogCacheDropAlert
+            annotations:
+              description: >-
+                TMFDofCategoryCache dropped below threshold value. Current Cache
+                size is {{ $value }}MB 
+            expr: >-
+              round(sum(vendor_cache_manager_default_cache_TMFDofCategoryCache_statistics_off_heap_memory_used)/1000000,.01)
+              < 1.06
+            for: 0m
+            labels:
+              cacheName: TMFDofCategoryCache
+              job: CatalogCacheDropAlert
+              namespace: ${MONITORING_NAMESPACE}
+              severity: critical     
+                     
+parameters:
+- name: NAMESPACE
+- name: REGION
+- name: MONITORING_NAMESPACE

@@ -1,0 +1,48 @@
+
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: prober
+objects:
+  - apiVersion: monitoring.coreos.com/v1
+    kind: Probe
+    metadata:
+      labels:
+        app: ${APP_NAME}
+      name: ${NAME}
+    spec:
+      interval: ${INTERVAL}
+      jobName: ${JOB_NAME}
+      metricRelabelings:
+        - sourceLabels:
+            - __address__
+          targetLabel: __param_target
+        - sourceLabels:
+            - __param_target
+          targetLabel: instance
+        - replacement: >-
+            ${URL}:9115
+          targetLabel: __address__
+      module: ${MODULE}
+      prober:
+        path: /probe
+        scheme: http
+        url: >-
+          ${URL}:9115
+      scrapeTimeout: 15s
+      targets:
+        staticConfig:
+          static:
+          - 'https://${HOST}/rest/v2/cache-managers/default/health/status'
+      tlsConfig:
+        insecureSkipVerify: true
+
+parameters:
+- name: INTERVAL
+- name: HOST
+- name: JOB_NAME
+- name: URL
+- name: APP_NAME
+- name: NAME
+- name: RHDG_NAMESPACE
+- name: MODULE
