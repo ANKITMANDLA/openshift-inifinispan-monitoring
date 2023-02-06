@@ -1242,8 +1242,8 @@ spec:
           "allValue": null,
           "current": {
             "selected": false,
-            "text": "rhdg-pt-cluster-brs59-d-admin",
-            "value": "rhdg-pt-cluster-brs59-d-admin"
+            "text": "rhdg-cluster",
+            "value": "rhdg-cluster"
           },
           "datasource": "Prometheus",
           "definition": "label_values(vendor_cache_manager_default_number_of_cache_configurations{namespace=~\"$namespace\"}, service)",
