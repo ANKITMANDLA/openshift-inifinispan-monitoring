@@ -21,7 +21,7 @@ Openshift template files  for Prometheus and Grafana for the purpose of installa
 - Give view permission to SA
   >oc adm policy add-role-to-user view -z infinispan-monitoring
 
-- get Grafana SA token for **thanos-qurier data source.
+- get Grafana SA token for **thanos-qurier** data source.
   >oc serviceaccounts get-token infinispan-monitoring
 - update variable **SA_TOKEN** on  file **grafana.parms** file with token value extracted from above steps. 
 - create secret for slack notification in monitoring namespace.
