@@ -6,4 +6,4 @@ INSTANCE=blackbox-exporter
 NAME=prometheus-blackbox-exporter
 VERSION=0.22.0
 PORT=9115
-DG_PASSWORD=PpQUbVnoloGWVVRy
+DG_PASSWORD=****

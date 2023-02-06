@@ -164,14 +164,18 @@ parameters:
   type: integer
   format: int32
 - name: SERVICEACCNAME
+  description: Service account name for monitoring. 
 - name: IMAGE
+  description: image URLs for blackbox exporter  
 - name: INSTANCE
 - name: NAME
+  description: for application label
 - name: VERSION
 - name: PORT
   type: integer
   format: int32
 - name: DG_PASSWORD
+  description: Datagrid password
 - name: APP_NAME
 
 
