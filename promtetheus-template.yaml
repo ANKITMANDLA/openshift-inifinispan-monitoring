@@ -177,7 +177,7 @@ objects:
               name: slack-notification # slack URL secret name
             channel: ${SLACK_CHANNEL} #slack channel name
             httpConfig:
-              proxyURL: 'http://fastweb.int.bell.ca:8083' # request to notificaton  URL via bell proxy
+              proxyURL: 'http://proxy.com:8080' # request to notificaton  URL via bell proxy
             sendResolved: true
             text: |-
               {{ range .Alerts }}<!here> {{ .Annotations.title }}
