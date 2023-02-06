@@ -192,7 +192,7 @@ objects:
 - kind: NetworkPolicy	
   apiVersion: networking.k8s.io/v1	
   metadata:	
-    name: allow-from-brsdof-monitoring-ingress	
+    name: allow-from-monitoring-ingress	
     namespace: ${RHDG_NAMESPACE}	
   spec:	
     podSelector: {}	
