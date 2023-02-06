@@ -96,8 +96,7 @@ Openshift template files  for Prometheus and Grafana for the purpose of installa
     
 - Verify the 3 probes in Prometheus operators are created
 
-## Deploy Prometheus Rules (This will be deployed along with prometheus.)
-- This will be deployed along with prometheus. If rules needs to be created seprately then this can be used.
+## Deploy Prometheus Rules 
 - Purpose of  this to update prometheus rules outside of prometheus deployment
 - Dont run when are  you installing for the very first time. 
 - To create the prometheus rules please issue the following commands in monitoring namespace. Update parm namespace & region in rules.parms file based on enviornment you are running.
@@ -112,36 +111,18 @@ Openshift template files  for Prometheus and Grafana for the purpose of installa
 - Verify the  prometheus rules in Prometheus operators are created
 
 
-## Deploy All the other namespaces datasources
 - Run the following commands to create each Thanos datasource
 
     > oc create -f thanos-qurier-template.yml
 
     > oc process thanos-datasource-template --param-file=thanos-qurier-rhdg.parms | oc apply -f -
 
-    > oc process thanos-datasource-template --param-file=thanos-qurier-cpq.parms | oc apply -f -
-
-    > oc process thanos-datasource-template --param-file=thanos-qurier-apis.parms | oc apply -f -
-
-    > oc process thanos-datasource-template --param-file=thanos-qurier-dof.parms | oc apply -f -
-
-    > oc process thanos-datasource-template --param-file=thanos-qurier-om.parms | oc apply -f -
-
-    > oc process thanos-datasource-template --param-file=thanos-qurier-omf.parms | oc apply -f -
 
 
-## Deploy the dashboards for all the other namespaces
-- create Grafana dashboards for all the other namespaces
-    > oc create -f dashboard/grafana-omf-kube-dashboard.yml
-    >
-    > oc create -f dashboard/grafana-om-kube-dashboard.yml
-    >
-    > oc create -f dashboard/grafana-cpq-kube-dashboard.yml
-    >
-    > oc create -f dashboard/grafana-dof-kube-dashboard.yml
-    >
-    > oc create -f dashboard/grafana-apis-kube-dashboard.yml
-    >
-    > create -f dashboard/grafana-infinispan-custom-dashboard.yml
+## Deploy the dashboards 
+- create Grafana dashboards 
+    
+    > oc create -f dashboard/grafana-infinispan-custom-dashboard.yml
+    > oc create -f dashboard/grafana-kube-dashboard.yml
     ## The infinispan custom will be recreated to add new functionalities
 
