@@ -9,9 +9,9 @@ Openshift template files  for Prometheus and Grafana for the purpose of installa
 
 ## prerequisite 
 - Openshift project access
-- Bell AI team installed **prometheus and Grafana Operator** on user  managed namespace
+- Openshift Admin team provide access  **prometheus and Grafana Operator** on user  managed namespace
 - Check if service account **grafana-serviceaccount** & **prometheus-k8s** exist on given namespace where we suppose to install monitoring solution. 
-- Slack webhook URLs for prometheus alert notification. Get it provisioned from  Bell IBM slack workspace  owner. 
+- Slack webhook URLs for prometheus alert notification. Get it provisioned from   slack workspace  owner. 
 - slack channel available for prometheus alert. 
 
 ## prepration
@@ -28,12 +28,10 @@ Openshift template files  for Prometheus and Grafana for the purpose of installa
   > oc create secret generic slack-notification --from-literal apiURL=<SLACK_WEBHOOK_URL>
   >
   > example: 
-  >
-  > **For PT -**
-  > 
-  >  oc create secret generic slack-notification --from-literal  apiURL=https://hooks.slack.com/services/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ScNDrIIMb8VBEo0yBFA0Q6de
+    > 
+  >  oc create secret generic slack-notification --from-literal  apiURL=https://hooks.slack.com/services/****/****/*******
 
-- Create secret for DG service monitor in monitoring namespace. Get the operator password from DG cluster secret. 
+- Create secret for Datagird service monitor in monitoring namespace. Get the operator password from DG cluster secret. 
   > oc create secret generic rhdg-operator-secret --from-literal username=operator --from-literal password=< Operator password >
 
 - Update  **grafana.parms** and **prometheus.parms** file with appropriate values.
