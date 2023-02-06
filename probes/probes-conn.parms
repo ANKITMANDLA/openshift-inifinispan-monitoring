@@ -1,7 +1,7 @@
 
 INTERVAL=5m
 HOST=rhdg.example.com
-URL=blackbox-exporter-prometheus-blackbox-exporter.brsdof-monitoring.svc.cluster.local
+URL=blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local
 JOB_NAME=blackbox-conn
 APP_NAME=rhdg
 RHDG_NAMESPACE=rhdg
