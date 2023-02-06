@@ -1,4 +1,4 @@
-MONITORING_NAMESPACE=brsdof-monitoring
+MONITORING_NAMESPACE=monitoring
 RHDG_NAMESPACE=rhdg
 OM_NAMESPACE=om-prod
 OMF_NAMESPACE=omf-prod
