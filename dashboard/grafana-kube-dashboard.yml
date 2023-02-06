@@ -2232,7 +2232,7 @@ spec:
         "targets": [
           {
             "exemplar": true,
-            "expr": "openshift_route_status{host=~\".+int.bell.ca\"}",
+            "expr": "openshift_route_status{host=~\".+example.com\"}",
             "interval": "",
             "legendFormat": "{{route}}",
             "refId": "A"
