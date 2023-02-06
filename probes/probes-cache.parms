@@ -1,5 +1,5 @@
 INTERVAL=5m
-HOST=rhdg-cluster-d-prod-external-rhdg.apps.ocp-prd-dor.bell.corp.bce.ca
+HOST=rhdg.example.com
 URL=blackbox-exporter-prometheus-blackbox-exporter.brsdof-monitoring.svc.cluster.local
 JOB_NAME=blackbox-cache
 APP_NAME=rhdg
