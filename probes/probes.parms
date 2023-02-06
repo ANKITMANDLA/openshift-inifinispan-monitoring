@@ -5,4 +5,4 @@ APP_NAME=rhdg
 RHDG_NAMESPACE=rhdg
 NAME=prober
 MODULE=http_dg
-HOST=rhdg-cluster-d-prod-external-rhdg.apps.ocp-prd-dor.bell.corp.bce.ca
+HOST=rhdg.example.com
